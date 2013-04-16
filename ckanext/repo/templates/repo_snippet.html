@@ -1,0 +1,23 @@
+<style>
+.repo-info {
+  font-size: small;
+}
+
+.repo-info .head a{
+  font-weight: bold;
+}
+
+.repo-info .head .branch{
+  font-weight: bold;
+}
+</style>
+
+<div class="repo-info">
+  <div class="head">
+    Using <a href={{ repo_info.url }} title="{{ repo_info.title }}" target="_blank">{{ repo_info.hash }}</a>
+    from branch <span class="branch">{{ repo_info.branch }}</span>.
+  </div>
+  <div class="date">
+    Last updated {{ repo_info.last_updated }}.
+  </div>
+</div>

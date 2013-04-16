@@ -1,0 +1,7 @@
+{% ckan_extends %}
+
+{% block footer_attribution %}
+  {{ super() }}
+  {{ h.get_repo_info() }}
+{% endblock %}
+
