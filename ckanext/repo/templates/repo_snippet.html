@@ -12,12 +12,15 @@
 }
 </style>
 
+{% for repo in repos_info %}
 <div class="repo-info">
+  {{ repo.name }}
   <div class="head">
-    Using <a href={{ repo_info.url }} title="{{ repo_info.title }}" target="_blank">{{ repo_info.hash }}</a>
-    from branch <span class="branch">{{ repo_info.branch }}</span>.
+    Using <a href={{ repo.url }} title="{{ repo.title }}" target="_blank">{{ repo.hash }}</a>
+    from branch <span class="branch">{{ repo.branch }}</span>.
   </div>
   <div class="date">
-    Last updated {{ repo_info.last_updated }}.
+    Last updated {{ repo.last_updated }}.
   </div>
 </div>
+{% endfor %}
