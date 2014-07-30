@@ -13,6 +13,9 @@ class RepoInfo(p.SingletonPlugin):
 
     p.implements(p.IConfigurer)
     p.implements(p.ITemplateHelpers)
+    p.implements(p.IActions)
+
+    # IConfigurer
 
     def update_config(self, config):
         # add template directory
@@ -28,10 +31,31 @@ class RepoInfo(p.SingletonPlugin):
             if repo_info:
                 self.repos_info.append(repo_info)
 
-    def get_helpers(self):
-        return {'get_repo_info': self.get_repos_info}
+    # p.ITemplateHelpers
 
-    def get_repos_info(self):
+    def get_helpers(self):
+        return {
+            'get_repos_info': self._get_repos_info,
+            'render_repos_info': self._render_repos_info,
+        }
+
+    # IActions
+
+    def get_actions(self):
+        @p.toolkit.side_effect_free
+        @p.toolkit.auth_allow_anonymous_access
+        def repos_info_show(context, data_dict):
+            return self.repos_info
+
+        return {
+            'repos_info_show': repos_info_show,
+        }
+
+    def _get_repos_info(self):
+        return self.repos_info
+
+
+    def _render_repos_info(self):
         return p.toolkit.render_snippet('repo_snippet.html',
                                         {'repos_info': self.repos_info})
 
