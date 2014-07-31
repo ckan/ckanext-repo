@@ -22,6 +22,9 @@ Add the following plugin to your CKAN ini file:
 After restarting your server you should see a snippet with the CKAN repository
 information added to your footer.
 
+![Screenshot](http://i.imgur.com/pUWRYdE.png)
+
+
 ## Configuration
 
 By default the extension will only show information about the core `ckan` repo.
