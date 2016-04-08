@@ -99,7 +99,7 @@ def _get_repo_info(src_path, repo_ref):
         return None
 
     if src_path:
-        cwd = os.path.join(os.path.dirname(module.__file__), src_path, repo_ref)
+        cwd = os.path.join(src_path, repo_ref)
     else:
         cwd = os.path.join(os.path.dirname(module.__file__), cwd_dir)
 
