@@ -23,11 +23,13 @@ class RepoInfo(p.SingletonPlugin):
 
         self.repos_info = []
 
+        src_path = config.get('ckanext.repo.srcpath', False)
+
         repo_refs = config.get('ckanext.repo.repos', 'ckan')
         repo_refs = repo_refs.split(' ')
 
         for repo_ref in repo_refs:
-            repo_info = _get_repo_info(repo_ref)
+            repo_info = _get_repo_info(src_path, repo_ref)
             if repo_info:
                 self.repos_info.append(repo_info)
 
@@ -74,7 +76,7 @@ def _import_module(name):
         return None
 
 
-def _get_repo_info(repo_ref):
+def _get_repo_info(src_path, repo_ref):
 
     if '/' in repo_ref:
         parts = repo_ref.split('/')
@@ -96,7 +98,10 @@ def _get_repo_info(repo_ref):
         log.error('Could not load module for repo {0}'.format(repo_ref))
         return None
 
-    cwd = os.path.join(os.path.dirname(module.__file__), cwd_dir)
+    if src_path:
+        cwd = os.path.join(os.path.dirname(module.__file__), src_path, repo_ref)
+    else:
+        cwd = os.path.join(os.path.dirname(module.__file__), cwd_dir)
 
     repo_info = {
         'name': repo_name,
