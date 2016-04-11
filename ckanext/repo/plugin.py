@@ -29,7 +29,7 @@ class RepoInfo(p.SingletonPlugin):
         repo_refs = repo_refs.split(' ')
 
         for repo_ref in repo_refs:
-            repo_info = _get_repo_info(src_path, repo_ref)
+            repo_info = _get_repo_info(repo_ref, src_path)
             if repo_info:
                 self.repos_info.append(repo_info)
 
@@ -76,7 +76,7 @@ def _import_module(name):
         return None
 
 
-def _get_repo_info(src_path, repo_ref):
+def _get_repo_info(repo_ref, src_path=False):
 
     if '/' in repo_ref:
         parts = repo_ref.split('/')
