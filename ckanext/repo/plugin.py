@@ -114,10 +114,10 @@ def _get_repo_info(repo_ref, src_path=False):
     # Current commit
     try:
         git_show = subprocess.check_output(
-            ['git', 'show', '--oneline'], cwd=cwd)
-        commit = git_show.split(b'\n')[0].split(b' ')
-        repo_info['hash'] = str(commit.pop(0))
-        repo_info['title'] = str(b' '.join(commit))
+            ['git', 'show', '--oneline'], cwd=cwd).decode('utf-8')
+        commit = git_show.split('\n')[0].split(' ')
+        repo_info['hash'] = commit.pop(0)
+        repo_info['title'] = ' '.join(commit)
         repo_info['url'] = 'https://github.com/{0}/{1}/commit/{2}'.format(
             github_org,
             repo_name,
@@ -127,16 +127,16 @@ def _get_repo_info(repo_ref, src_path=False):
 
     # Current branch (requires Git 1.6.3 or higher)
     try:
-        repo_info['branch'] = str(subprocess.check_output(
-            ['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=cwd).strip())
+        repo_info['branch'] = subprocess.check_output(
+            ['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=cwd).decode('utf-8').strip()
+
     except subprocess.CalledProcessError:
         pass
 
     # Last pulled
     try:
         date = subprocess.check_output(
-            ['stat', '-c', '%Y', '.git/FETCH_HEAD'], cwd=cwd)
-
+            ['stat', '-c', '%Y', '.git/FETCH_HEAD'], cwd=cwd).decode('utf-8')
         repo_info['last_updated'] = datetime.datetime.fromtimestamp(
             int(date)).strftime('%Y-%m-%d %H:%M:%S')
     except subprocess.CalledProcessError:
