@@ -114,7 +114,7 @@ def _get_repo_info(repo_ref, src_path=False):
     # Current commit
     try:
         git_show = subprocess.check_output(
-            ['git', 'show', '--oneline'], cwd=cwd)
+            ['git', 'show', '--oneline'], cwd=cwd).decode('utf-8')
         commit = git_show.split('\n')[0].split(' ')
         repo_info['hash'] = commit.pop(0)
         repo_info['title'] = ' '.join(commit)
@@ -128,15 +128,15 @@ def _get_repo_info(repo_ref, src_path=False):
     # Current branch (requires Git 1.6.3 or higher)
     try:
         repo_info['branch'] = subprocess.check_output(
-            ['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=cwd).strip()
+            ['git', 'rev-parse', '--abbrev-ref', 'HEAD'], cwd=cwd).decode('utf-8').strip()
+
     except subprocess.CalledProcessError:
         pass
 
     # Last pulled
     try:
         date = subprocess.check_output(
-            ['stat', '-c', '%Y', '.git/FETCH_HEAD'], cwd=cwd)
-
+            ['stat', '-c', '%Y', '.git/FETCH_HEAD'], cwd=cwd).decode('utf-8')
         repo_info['last_updated'] = datetime.datetime.fromtimestamp(
             int(date)).strftime('%Y-%m-%d %H:%M:%S')
     except subprocess.CalledProcessError:
